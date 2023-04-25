@@ -5,10 +5,27 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import { useState } from "react";
+import axios from "axios";
+import { baseURL } from "../../utilits/baseURL";
 
-export const Login = () => {
-  function handleSubmit() {
-    console.log("Nada não!");
+const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleSubmit() {
+    const body = {
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await axios.post(`${baseURL}/users/login`, body);
+      if (response.status !== 200) throw new Error("Não autorizado");
+      localStorage.setItem("Labeddit-token", response.data.token);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -25,15 +42,16 @@ export const Login = () => {
         <Typography component="h1" variant="h5">
           Login
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
             fullWidth
             id="email"
-            label="Email Address"
+            label="E-mail"
             name="email"
             autoComplete="email"
+            onChange={(e) => setEmail(e.target.value)}
           />
           <TextField
             margin="normal"
@@ -44,12 +62,13 @@ export const Login = () => {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
           />
-          <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button type="button" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
             Continuar
           </Button>
           <Grid container>
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="button" fullWidth variant="contained" sx={{ mt: 1, mb: 2 }}>
               Criar uma conta!
             </Button>
           </Grid>
@@ -58,3 +77,5 @@ export const Login = () => {
     </Container>
   );
 };
+
+export default Login;

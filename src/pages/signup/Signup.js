@@ -8,7 +8,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { FormControlLabel } from "@mui/material";
 
-export const Signup = () => {
+const Signup = () => {
   function handleSubmit() {
     console.log("Nada não!");
   }
@@ -80,3 +80,5 @@ export const Signup = () => {
     </Container>
   );
 };
+
+export default Signup;

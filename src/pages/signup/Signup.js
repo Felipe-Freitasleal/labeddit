@@ -6,11 +6,16 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { FormControlLabel } from "@mui/material";
+import { Backdrop, CircularProgress, FormControlLabel } from "@mui/material";
+import { useState } from "react";
 
 const Signup = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   function handleSubmit() {
+    setIsLoading(true);
     console.log("Nada não!");
+    setIsLoading(false);
   }
 
   return (
@@ -27,7 +32,7 @@ const Signup = () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
@@ -70,13 +75,17 @@ const Signup = () => {
               />
             </Grid>
             <Grid item>
-              <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Cadastrar
+              <Button type="button" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
+                Continuar
               </Button>
             </Grid>
           </Grid>
         </Box>
       </Box>
+
+      <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
+        <CircularProgress sx={{ color: "#FF6489" }} />
+      </Backdrop>
     </Container>
   );
 };

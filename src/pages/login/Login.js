@@ -8,10 +8,16 @@ import Container from "@mui/material/Container";
 import { useState } from "react";
 import axios from "axios";
 import { baseURL } from "../../utilits/baseURL";
+import { useNavigate } from "react-router-dom";
+import { Alert, Backdrop, CircularProgress, Collapse, IconButton } from "@mui/material";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [messagerError, setMessagerError] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit() {
     const body = {
@@ -20,12 +26,22 @@ const Login = () => {
     };
 
     try {
+      setIsLoading(true);
       const response = await axios.post(`${baseURL}/users/login`, body);
       if (response.status !== 200) throw new Error("Não autorizado");
       localStorage.setItem("Labeddit-token", response.data.token);
+      if (response.status === 200) navigate("/");
     } catch (error) {
       console.log(error);
+      setMessagerError(error.response.data);
+      setOpenAlert(true);
+    } finally {
+      setIsLoading(false);
     }
+  }
+
+  function handleSignup() {
+    navigate("/signup");
   }
 
   return (
@@ -64,16 +80,42 @@ const Login = () => {
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
           />
+          <Box sx={{ width: "100%" }}>
+            <Collapse in={openAlert}>
+              <Alert
+                severity="error"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setOpenAlert(false);
+                    }}
+                  >
+                    X
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+              >
+                {messagerError}
+              </Alert>
+            </Collapse>
+          </Box>
           <Button type="button" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
             Continuar
           </Button>
           <Grid container>
-            <Button type="button" fullWidth variant="contained" sx={{ mt: 1, mb: 2 }}>
+            <Button type="button" fullWidth variant="contained" sx={{ mt: 1, mb: 2 }} onClick={handleSignup}>
               Criar uma conta!
             </Button>
           </Grid>
         </Box>
       </Box>
+
+      <Backdrop sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isLoading}>
+        <CircularProgress sx={{ color: "#FF6489" }} />
+      </Backdrop>
     </Container>
   );
 };

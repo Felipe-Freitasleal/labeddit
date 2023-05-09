@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Fade, Grid, TextField, Typography } from "@mui/material";
+import { Box, Button, Grid, Skeleton, Stack, Typography } from "@mui/material";
 import axios from "axios";
 import { baseURL } from "../../utilits/baseURL";
 import { useEffect, useState } from "react";
@@ -34,27 +34,11 @@ const Home = () => {
   useEffect(() => {
     getPosts();
   }, []);
+
   return (
     <Box padding={"28px"}>
-      <Box sx={{ height: 40, justifyContent: "center" }}>
-        <Fade in={isLoading} unmountOnExit>
-          <CircularProgress />
-        </Fade>
-      </Box>
-      <Grid>
-        <TextField
-          fullWidth
-          margin="normal"
-          id="new-post"
-          label="Escreva seu post..."
-          name="new-post"
-          autoComplete="new-post"
-          sx={{
-            backgroundColor: "#EDEDED",
-            // borderRadius: "12px",
-            h: "131px",
-          }}
-        />
+      <Grid border={"solid black 1px"} height="200px">
+        <input />
         <Button type="button" fullWidth variant="contained" sx={{ mb: 3 }}>
           Postar
         </Button>
@@ -115,6 +99,14 @@ const Home = () => {
           </Typography>
         </Grid>
       ))}
+      {isLoading && (
+        <Stack spacing={1}>
+          <Skeleton variant="rounded" width={"80vw"} height={"16vh"} />
+          <Skeleton variant="rounded" width={"80vw"} height={"16vh"} />
+          <Skeleton variant="rounded" width={"80vw"} height={"16vh"} />
+          <Skeleton variant="rounded" width={"80vw"} height={"16vh"} />
+        </Stack>
+      )}
     </Box>
   );
 };

@@ -16,7 +16,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [openAlert, setOpenAlert] = useState(false);
-  const [messagerError, setMessagerError] = useState("");
+  const [messageError, setMessageError] = useState("");
   const navigate = useNavigate();
 
   async function handleSubmit() {
@@ -30,17 +30,21 @@ const Login = () => {
       const response = await axios.post(`${baseURL}/users/login`, body);
       if (response.status !== 200) throw new Error("Não autorizado");
       localStorage.setItem("Labeddit-token", response.data.token);
-      if (response.status === 200) navigate("/");
+      if (response.status === 200) goToHome(navigate);
     } catch (error) {
       console.log(error);
-      setMessagerError(error.response.data);
+      setMessageError(error.response.data);
       setOpenAlert(true);
     } finally {
       setIsLoading(false);
     }
   }
 
-  function handleSignup() {
+  function goToHome(navigate) {
+    navigate("/");
+  }
+
+  function handleSignup(navigate) {
     navigate("/signup");
   }
 
@@ -98,7 +102,7 @@ const Login = () => {
                 }
                 sx={{ mb: 2 }}
               >
-                {messagerError}
+                {messageError}
               </Alert>
             </Collapse>
           </Box>

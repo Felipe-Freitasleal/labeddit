@@ -1,12 +1,17 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/login/Login";
 import Signup from "../pages/signup/Signup";
-import Home from "../pages/home/Home";
+// import Home from "../pages/home/Home";
+import { Suspense, lazy } from "react";
+import { CircularProgress } from "@mui/material";
 
 export const Router = () => {
-  const getToken = localStorage.getItem("Labeddit-token");
+  const LazyHome = lazy(() => import("../pages/home/Home.js"));
+
   function ProtectedRoutes({ children }) {
+    const getToken = localStorage.getItem("Labeddit-token");
     if (!getToken) {
+      window.alert("Acesso negado!");
       return <Navigate to="/login" replace />;
     }
     return children;
@@ -19,7 +24,9 @@ export const Router = () => {
           path="/"
           element={
             <ProtectedRoutes>
-              <Home />
+              <Suspense fallback={<CircularProgress sx={{ position: "absolute", right: "50%", top: "50%" }} />}>
+                <LazyHome />
+              </Suspense>
             </ProtectedRoutes>
           }
         />

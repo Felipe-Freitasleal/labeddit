@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/login/Login";
 import Signup from "../pages/signup/Signup";
-// import Home from "../pages/home/Home";
 import { Suspense, lazy } from "react";
 import { CircularProgress } from "@mui/material";
 
@@ -11,7 +10,6 @@ export const Router = () => {
   function ProtectedRoutes({ children }) {
     const getToken = localStorage.getItem("Labeddit-token");
     if (!getToken) {
-      window.alert("Acesso negado!");
       return <Navigate to="/login" replace />;
     }
     return children;

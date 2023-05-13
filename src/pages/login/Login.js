@@ -106,7 +106,23 @@ const Login = () => {
               </Alert>
             </Collapse>
           </Box>
-          <Button type="button" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} onClick={handleSubmit}>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{
+              mt: 3,
+              mb: 2,
+              fontFamily: "IBM Plex Sans",
+              fontStyle: "normal",
+              fontWeight: 700,
+              fontSize: "18px",
+              lineHeight: "23px",
+              borderRadius: "12px",
+              background: "linear-gradient(90deg, #FF6489 0%, #F9B24E 100%), #4088CB",
+            }}
+            onClick={handleSubmit}
+          >
             Continuar
           </Button>
           <Grid container>

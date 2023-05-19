@@ -30,6 +30,8 @@ const Login = () => {
       const response = await axios.post(`${baseURL}/users/login`, body);
       if (response.status !== 200) throw new Error("Não autorizado");
       localStorage.setItem("Labeddit-token", response.data.token);
+      const data = new Date();
+      localStorage.setItem("dateToken", data.toDateString());
       if (response.status === 200) goToHome(navigate);
     } catch (error) {
       console.log(error);

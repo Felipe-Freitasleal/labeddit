@@ -9,7 +9,11 @@ export const Router = () => {
 
   function ProtectedRoutes({ children }) {
     const getToken = localStorage.getItem("Labeddit-token");
+    const dataAtual = new Date();
+    const dataToken = localStorage.getItem("dateToken");
     if (!getToken) {
+      return <Navigate to="/login" replace />;
+    } else if (dataAtual.toDateString() !== dataToken) {
       return <Navigate to="/login" replace />;
     }
     return children;
